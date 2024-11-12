@@ -1,8 +1,17 @@
 <script>
-	import { DataTable, OverflowMenu, OverflowMenuItem, Pagination } from 'carbon-components-svelte';
+	import {
+		DataTable,
+		OverflowMenu,
+		OverflowMenuItem,
+		Pagination,
+		Button,
+		Modal
+	} from 'carbon-components-svelte';
 	import { onMount } from 'svelte';
+	import Notify from './Notify.svelte';
 	import axios from 'axios';
 
+	// ARRAYS ************
 	// Array con los campos de la tabla. Este array se inyecta en el componente Table
 	const headers = [
 		{ key: 'code', value: 'Código' },
@@ -14,10 +23,18 @@
 		{ key: 'overflow', empty: true }
 	];
 
+	// VARIABLES ************
 	let products = [];
+	// Variables de Pagination.
 	let pageSize = 10;
 	let page = 1;
+	// En esta variable guardo el producto perteneciente a la fila (ver fila 87).
+	let productToDelete = null;
+	// Variable de estado para el Modal.
+	let open = false;
+	let notification = null;
 
+	// FUNCIONES ************
 	// Funcion asincrona que hace la peticion a la BD
 	const product = async (e) => {
 		// Hacemos peticion a la BD para traer los productos
@@ -38,14 +55,19 @@
 		products = [...products];
 	};
 
+	// Funcion asincrona al endpoint para eliminar un producto
 	const deleteProduct = async (id) => {
-		console.log(id);
 		const response = await axios.delete(`http://localhost:4000/api/product/${id}`);
+		const res = response.data;
+		notification = res.status === 'success' ? 'success' : 'error';
+		setTimeout(() => {
+			notification = null;
+		}, 4000);
 		products = products.filter((product) => product.id !== id);
 		products = [...products];
-		console.log(response);
 	};
 
+	// ONMOUNT ************
 	// onMount es un ciclo de vida en Svelte que se ejecuta cuando el componente se monta en el DOM, es decir,
 	//justo después de que se haya renderizado inicialmente
 	onMount(() => {
@@ -64,7 +86,14 @@
 			{#if cell.key === 'overflow'}
 				<OverflowMenu flipped>
 					<OverflowMenuItem text="Modificar" />
-					<OverflowMenuItem danger text="Eliminar" on:click={() => deleteProduct(row.id)} />
+					<OverflowMenuItem
+						danger
+						text="Eliminar"
+						on:click={() => {
+							productToDelete = row;
+							open = true;
+						}}
+					/>
 				</OverflowMenu>
 			{:else}{cell.value}{/if}
 		</svelte:fragment>
@@ -78,6 +107,35 @@
 			page = detail.page;
 		}}
 	/>
+
+	<Modal
+		danger
+		size="xs"
+		bind:open
+		modalHeading="Advertencia"
+		primaryButtonText="Borrar"
+		secondaryButtonText="Cancelar"
+		on:click:button--secondary
+		on:click:button--primary={() => {
+			deleteProduct(productToDelete.id);
+			open = false;
+		}}
+		on:click:button--secondary={() => (open = false)}
+		on:open
+		on:close
+		on:submit
+	>
+		<p>Se eliminará un producto. ¿Esta seguro que desea continuar?</p>
+	</Modal>
+
+	<div class="noti">
+		{#if notification === 'success'}<Notify
+				title="Producto eliminado"
+				kind="success"
+			/>{:else if notification === 'error'}
+			<Notify title="Error al elimanar producto" kind="error" />
+		{/if}
+	</div>
 </div>
 
 <style>
