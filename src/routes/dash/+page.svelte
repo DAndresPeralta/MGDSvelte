@@ -1,6 +1,13 @@
-<script context="module">
+<script>
 	import Table from '../../lib/Table.svelte';
 	import { mostrarTable } from '../../lib/js/store';
+	import { onMount } from 'svelte';
+
+	export let data;
+
+	onMount(async () => {
+		console.log(data);
+	});
 </script>
 
 <main>
