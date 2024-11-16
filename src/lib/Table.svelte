@@ -10,6 +10,22 @@
 	import { onMount } from 'svelte';
 	import Notify from './Notify.svelte';
 	import axios from 'axios';
+	import { createEventDispatcher } from 'svelte';
+
+	// VARIABLES ************
+	// let products = [];
+	export let product = [];
+	// Variables de Pagination.
+	let pageSize = 10;
+	let page = 1;
+	// En esta variable guardo el producto perteneciente a la fila (ver fila 87).
+	let productToDelete = null;
+	let productToUpdate = null;
+	// Variable de estado para el Modal.
+	let open = false;
+	let notification = null;
+
+	const dispatch = createEventDispatcher();
 
 	// ARRAYS ************
 	// Array con los campos de la tabla. Este array se inyecta en el componente Table
@@ -23,59 +39,56 @@
 		{ key: 'overflow', empty: true }
 	];
 
-	// VARIABLES ************
-	let products = [];
-	// Variables de Pagination.
-	let pageSize = 10;
-	let page = 1;
-	// En esta variable guardo el producto perteneciente a la fila (ver fila 87).
-	let productToDelete = null;
-	// Variable de estado para el Modal.
-	let open = false;
-	let notification = null;
-
 	// FUNCIONES ************
 	// Funcion asincrona que hace la peticion a la BD
-	const product = async (e) => {
-		// Hacemos peticion a la BD para traer los productos
-		const response = await axios.get('http://localhost:4000/api/product');
+	// const product = async (e) => {
+	// 	// Hacemos peticion a la BD para traer los productos
+	// 	const response = await axios.get('http://localhost:4000/api/product');
 
-		// Se guardan los productos traidos en un array
-		products = response.data.payload.result.map((item) => ({
-			id: item._id,
-			code: item.code,
-			brand: item.brand,
-			product: item.product,
-			weight: item.weight,
-			stock: item.stock,
-			obs: item.obs
-		}));
+	// 	// Se guardan los productos traidos en un array
+	// 	products = response.data.payload.result.map((item) => ({
+	// 		id: item._id,
+	// 		code: item.code,
+	// 		brand: item.brand,
+	// 		product: item.product,
+	// 		weight: item.weight,
+	// 		stock: item.stock,
+	// 		obs: item.obs
+	// 	}));
 
-		// Se modifica el array declarado anteriormente con spread operator para que se actualice en el componente.
-		products = [...products];
-	};
+	// 	// Se modifica el array declarado anteriormente con spread operator para que se actualice en el componente.
+	// 	products = [...products];
+	// };
 
 	// Funcion asincrona al endpoint para eliminar un producto
 	const deleteProduct = async (id) => {
-		const response = await axios.delete(`http://localhost:4000/api/product/${id}`);
+		const response = await axios.delete(`http://localhost:4000/api/product/${id}`, {
+			withCredentials: true
+		});
+
 		const res = response.data;
 		notification = res.status === 'success' ? 'success' : 'error';
 		setTimeout(() => {
 			notification = null;
 		}, 4000);
-		products = products.filter((product) => product.id !== id);
-		products = [...products];
+		product = product.filter((product) => product.id !== id);
+		product = [...product];
+	};
+
+	const manejadorModificacion = (product) => {
+		console.log(product);
+		dispatch('editarProducto', product);
 	};
 
 	// ONMOUNT ************
 	// onMount es un ciclo de vida en Svelte que se ejecuta cuando el componente se monta en el DOM, es decir,
 	//justo después de que se haya renderizado inicialmente
-	onMount(() => {
-		product();
-	});
+	// onMount(() => {
+	// 	product();
+	// });
 
 	// Para paginar
-	$: pagedProducts = products.slice((page - 1) * pageSize, page * pageSize);
+	$: pagedProducts = product.slice((page - 1) * pageSize, page * pageSize);
 </script>
 
 <!-- let:row me permite acceder a cada fila y por ende a los atributos de cada producto -->
@@ -85,7 +98,13 @@
 		<svelte:fragment slot="cell" let:cell let:row>
 			{#if cell.key === 'overflow'}
 				<OverflowMenu flipped>
-					<OverflowMenuItem text="Modificar" />
+					<OverflowMenuItem
+						text="Modificar"
+						on:click={() => {
+							productToUpdate = row;
+							manejadorModificacion(productToUpdate);
+						}}
+					/>
 					<OverflowMenuItem
 						danger
 						text="Eliminar"
@@ -101,7 +120,7 @@
 	<Pagination
 		bind:page
 		bind:pageSize
-		totalItems={products.length}
+		totalItems={product.length}
 		pageSizeInputDisabled
 		on:pageChange={({ detail }) => {
 			page = detail.page;

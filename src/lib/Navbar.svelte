@@ -10,13 +10,21 @@
 		Row,
 		Column
 	} from 'carbon-components-svelte';
-	import { mostrarTable } from './js/store';
+	import { mostrarTable, mostrarFormulario, mostrarFormularioAgregar } from './js/store';
 	let isSideNavOpen = false;
 
 	export const mostrarProdutos = (e) => {
 		e.preventDefault();
 		// Cambia el estado a true
 		mostrarTable.set(true);
+		mostrarFormulario.set(false);
+	};
+
+	export const mostrarFormularioAdd = (e) => {
+		e.preventDefault();
+		mostrarTable.set(false);
+		mostrarFormulario.set(false);
+		mostrarFormularioAgregar.set(true);
 	};
 </script>
 
@@ -28,7 +36,7 @@
 		<HeaderNavMenu text="Productos">
 			<!-- Llamo a la funcion mostrarProductos para que le cambie el estado a mostrarTable a true -->
 			<HeaderNavItem on:click={mostrarProdutos} text="Consulta" />
-			<HeaderNavItem href="/" text="Agregar" />
+			<HeaderNavItem on:click={mostrarFormularioAdd} text="Agregar" />
 			<HeaderNavItem href="/" text="Modificar" />
 			<HeaderNavItem href="/" text="Eliminar" />
 		</HeaderNavMenu>
