@@ -11,15 +11,15 @@
     | ------- | ------------ | -------------------------------------------------------------------------------------------------- | ------------- |
     | 051124  | Agregar      | Desarrollar formulario de agregar producto                                                         | **Completo**  |
     | 081124  | Modificar    | Desarrolar formulario de modificar producto (reutilizacion)                                        | **Completo**  |
-    | 111124  | Modificar    | Organizar y distribuir codigo correctamente                                                        | **Pendiente** |
+    | 111124  | Modificar    | Organizar y distribuir codigo correctamente                                                        | **En Curso**  |
     | A181124 | Ver Producto | Desarrollar funcionalidad de Ver el producto en detalle, haciendo clic sobre el o en el kebab menú | **Pendiente** |
     | B181124 | Eliminar     | Desarrollar tabla con caja de texto para busqueda y solo la opcion de eliminar el producto         | **Pendiente** |
 
 - **INCIDENCIAS**
 
-  - | Ticket     | Funcionalidad | Incidencia                                                                                | Estado        |
-    | ---------- | ------------- | ----------------------------------------------------------------------------------------- | ------------- |
-    | **051124** | Agregar       | Al guardar el producto, el mismo no se renderiza en la tabla "consulta", se debe recargar | **Pendiente** |
+  - | Ticket     | Funcionalidad | Incidencia                                                                                | Estado       |
+    | ---------- | ------------- | ----------------------------------------------------------------------------------------- | ------------ |
+    | **051124** | Agregar       | Al guardar el producto, el mismo no se renderiza en la tabla "consulta", se debe recargar | **Completo** |
 
 ### **09/11/24:**
 

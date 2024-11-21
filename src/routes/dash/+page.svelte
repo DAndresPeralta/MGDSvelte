@@ -3,18 +3,18 @@
 	import FormInput from '../../lib/FormInput.svelte';
 	import { mostrarFormularioAgregar, mostrarTable } from '../../lib/js/store';
 	import { mostrarFormulario } from '../../lib/js/store';
+	import { productStore } from '../../lib/js/store.js';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
 
 	// VARIABLES ************
 	// Para la Table
-	export let data;
+	// export let data;
 	let product = [];
 	// Variables de estado para el formulario
 	let productoSeleccionado = null;
 
 	const lanzarFormulario = (product) => {
-		console.log(product);
 		productoSeleccionado = product;
 		mostrarFormulario.set(true);
 	};
@@ -30,6 +30,7 @@
 			);
 			mostrarFormulario.set(false);
 			productoSeleccionado = null;
+			cargarProductos();
 		} catch (error) {}
 	};
 
@@ -40,17 +41,7 @@
 			});
 			mostrarFormularioAgregar.set(false);
 			mostrarTable.set(true);
-
-			product = response.data.payload.result.map((item) => ({
-				id: item._id,
-				code: item.code,
-				brand: item.brand,
-				product: item.product,
-				weight: item.weight,
-				stock: item.stock,
-				obs: item.obs
-			}));
-			product = [...product];
+			cargarProductos();
 		} catch (error) {}
 	};
 
@@ -59,13 +50,9 @@
 		mostrarFormularioAgregar.set(false);
 	};
 
-	// ONMOUNT ************
-	// onMount es un ciclo de vida en Svelte que se ejecuta cuando el componente se monta en el DOM, es decir,
-	//justo después de que se haya renderizado inicialmente
-	onMount(async () => {
-		// Hacemos peticion a la BD para traer los productos
+	const cargarProductos = async () => {
 		const response = await axios.get('http://localhost:4000/api/product');
-		// Se guardan los productos traidos en un array
+
 		product = response.data.payload.result.map((item) => ({
 			id: item._id,
 			code: item.code,
@@ -75,10 +62,14 @@
 			stock: item.stock,
 			obs: item.obs
 		}));
+		productStore.set(product);
+	};
 
-		// Se modifica el array declarado anteriormente con spread operator para que se actualice en el componente.
-		product = [...product];
-		console.log(data);
+	// ONMOUNT ************
+	// onMount es un ciclo de vida en Svelte que se ejecuta cuando el componente se monta en el DOM, es decir,
+	//justo después de que se haya renderizado inicialmente
+	onMount(async () => {
+		cargarProductos();
 	});
 </script>
 
