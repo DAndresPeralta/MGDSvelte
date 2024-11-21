@@ -1,10 +1,25 @@
+- **GENERAL:**
+
+  - | Ticket  | Tarea                  | Descripción                                            | Estado       |
+    | ------- | ---------------------- | ------------------------------------------------------ | ------------ |
+    | C181124 | Botón Cierre de Sesión | Agregar botón de cierre de sesion con logica en Navbar | **Completo** |
+    | 211124  | Botón Cierre de Sesión | Ordenar código, completar catch                        | **Completo** |
+
 - **PRODUCTO:**
 
-  - | Tarea     | Descripción                                                 | Estado        |
-    | --------- | ----------------------------------------------------------- | ------------- |
-    | Agregar   | Desarrollar formulario de agregar producto                  | **En Curso**  |
-    | Modificar | Desarrolar formulario de modificar producto (reutilizacion) | **Completo**  |
-    | Modificar | Organizar y distribuir codigo correctamente                 | **Pendiente** |
+  - | Ticket  | Tarea        | Descripción                                                                                        | Estado        |
+    | ------- | ------------ | -------------------------------------------------------------------------------------------------- | ------------- |
+    | 051124  | Agregar      | Desarrollar formulario de agregar producto                                                         | **Completo**  |
+    | 081124  | Modificar    | Desarrolar formulario de modificar producto (reutilizacion)                                        | **Completo**  |
+    | 111124  | Modificar    | Organizar y distribuir codigo correctamente                                                        | **Pendiente** |
+    | A181124 | Ver Producto | Desarrollar funcionalidad de Ver el producto en detalle, haciendo clic sobre el o en el kebab menú | **Pendiente** |
+    | B181124 | Eliminar     | Desarrollar tabla con caja de texto para busqueda y solo la opcion de eliminar el producto         | **Pendiente** |
+
+- **INCIDENCIAS**
+
+  - | Ticket     | Funcionalidad | Incidencia                                                                                | Estado        |
+    | ---------- | ------------- | ----------------------------------------------------------------------------------------- | ------------- |
+    | **051124** | Agregar       | Al guardar el producto, el mismo no se renderiza en la tabla "consulta", se debe recargar | **Pendiente** |
 
 ### **09/11/24:**
 

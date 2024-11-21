@@ -35,14 +35,22 @@
 
 	const agregarProducto = async (formData) => {
 		try {
-			console.log('ingreso');
-			console.log(formData);
-
 			const response = await axios.post(`http://localhost:4000/api/product/`, formData, {
 				withCredentials: true
 			});
 			mostrarFormularioAgregar.set(false);
 			mostrarTable.set(true);
+
+			product = response.data.payload.result.map((item) => ({
+				id: item._id,
+				code: item.code,
+				brand: item.brand,
+				product: item.product,
+				weight: item.weight,
+				stock: item.stock,
+				obs: item.obs
+			}));
+			product = [...product];
 		} catch (error) {}
 	};
 

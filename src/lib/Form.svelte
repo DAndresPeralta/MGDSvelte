@@ -67,7 +67,7 @@
 			/>
 		</div>
 		<div class="button-group">
-			<Button type="submit" title="Ingresar" />
+			<Button type="submit" kind="tertiary" title="Ingresar" />
 		</div>
 	</FluidForm>
 </div>
