@@ -11,6 +11,10 @@
 		Column
 	} from 'carbon-components-svelte';
 	import { mostrarTable, mostrarFormulario, mostrarFormularioAgregar } from './js/store';
+	import Button from './Button.svelte';
+	import axios from 'axios';
+	import { goto } from '$app/navigation';
+	import errores from '../utils/errors.js';
 	let isSideNavOpen = false;
 
 	export const mostrarProdutos = (e) => {
@@ -25,6 +29,27 @@
 		mostrarTable.set(false);
 		mostrarFormulario.set(false);
 		mostrarFormularioAgregar.set(true);
+	};
+
+	const cerrarSesion = async (e) => {
+		try {
+			e.preventDefault();
+			const response = await axios.post(
+				`http://localhost:4000/api/logout`,
+				{},
+				{
+					withCredentials: true,
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+			);
+			const res = response.data;
+
+			if (res.status === 'success') goto('/');
+		} catch (error) {
+			errores.manejoDeErrores(error);
+		}
 	};
 </script>
 
@@ -53,6 +78,11 @@
 			<HeaderNavItem href="/" text="Eliminar" />
 		</HeaderNavMenu>
 	</HeaderNav>
+	<div class="botonCerrarSesion">
+		<!-- para que on:click funcione se tiene que agregar un dispatch en el componente hijo Button, para que se propague el evento desde el hacia el componente
+		padre, en este caso, Navbar -->
+		<Button type="button" kind="danger" title="Cerrar Sesión" on:click={cerrarSesion} />
+	</div>
 </Header>
 
 <!-- <Content>
@@ -64,3 +94,11 @@
 		</Row>
 	</Grid>
 </Content> -->
+
+<style>
+	.botonCerrarSesion {
+		margin-left: auto;
+		display: flex;
+		align-items: center;
+	}
+</style>

@@ -35,7 +35,7 @@
 		margin: 0 auto;
 		padding: 2rem;
 		border-radius: 0;
-		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 1);
 	}
 	.botones {
 		margin-top: 1.5rem;
