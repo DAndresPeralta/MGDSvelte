@@ -11,10 +11,11 @@
 	import Notify from './Notify.svelte';
 	import axios from 'axios';
 	import { createEventDispatcher } from 'svelte';
+	import { productStore } from './js/store.js';
 
 	// VARIABLES ************
 	// let products = [];
-	export let product = [];
+	let product = [];
 	// Variables de Pagination.
 	let pageSize = 10;
 	let page = 1;
@@ -26,6 +27,12 @@
 	let notification = null;
 
 	const dispatch = createEventDispatcher();
+
+	// Utilizar suscribre es lo mismo que usar '$' delante de la store. Ambos indican que sea reactiva. El ser reactivo hace que cualquier
+	//modificacion impacte en todas las variables o componentes del DOM
+	productStore.subscribe((productos) => {
+		product = productos;
+	});
 
 	// ARRAYS ************
 	// Array con los campos de la tabla. Este array se inyecta en el componente Table
@@ -71,22 +78,18 @@
 		setTimeout(() => {
 			notification = null;
 		}, 4000);
-		product = product.filter((product) => product.id !== id);
-		product = [...product];
+
+		productStore.update((productos) => productos.filter((prod) => prod.id !== id));
+		open = false;
 	};
 
 	const manejadorModificacion = (product) => {
-		console.log(product);
 		dispatch('editarProducto', product);
 	};
 
 	// ONMOUNT ************
 	// onMount es un ciclo de vida en Svelte que se ejecuta cuando el componente se monta en el DOM, es decir,
 	//justo después de que se haya renderizado inicialmente
-	// onMount(() => {
-	// 	product();
-	// });
-
 	// Para paginar
 	$: pagedProducts = product.slice((page - 1) * pageSize, page * pageSize);
 </script>

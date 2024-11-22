@@ -4,3 +4,6 @@ import { writable } from 'svelte/store';
 export const mostrarTable = writable(false);
 export const mostrarFormulario = writable(false);
 export const mostrarFormularioAgregar = writable(false);
+
+// Store para manejar la reactividad de Productos
+export const productStore = writable([]);
