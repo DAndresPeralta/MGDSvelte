@@ -12,7 +12,8 @@
     | 051124  | Agregar      | Desarrollar formulario de agregar producto                                                         | **Completo**  |
     | 081124  | Modificar    | Desarrolar formulario de modificar producto (reutilizacion)                                        | **Completo**  |
     | 111124  | Modificar    | Organizar y distribuir codigo correctamente                                                        | **En Curso**  |
-    | A181124 | Ver Producto | Desarrollar funcionalidad de Ver el producto en detalle, haciendo clic sobre el o en el kebab menú | **Pendiente** |
+    | A181124 | Ver Producto | Desarrollar funcionalidad de Ver el producto en detalle, haciendo clic sobre el o en el kebab menú | **En Curso**  |
+    | A011224 | Ver Producto | En la funcionalidad de Ver producto(A181124), agregar botones para modificación de stock           | **Pendiente** |
     | B181124 | Eliminar     | Desarrollar tabla con caja de texto para busqueda y solo la opcion de eliminar el producto         | **Pendiente** |
 
 - **INCIDENCIAS**
@@ -32,3 +33,7 @@
   - Al renderizarse de llama al componente **FormInput** y se envian las props
   - El componente FormInput genera dos **eventDispatcher** al componente padre (+page) uno para cancelar y otro para guardar el producto (enviar los datos ingresados en el formulario por el usuario a +page.svelte)
   - **+page.svelte** llama a la funcion guardarProducto, la cual hace la peticion a la APIRest.
+
+### **01/12/24:**
+
+- Se esta desarrollando una vista ampliade del producto.

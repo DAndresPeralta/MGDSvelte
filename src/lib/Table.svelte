@@ -11,7 +11,7 @@
 	import Notify from './Notify.svelte';
 	import axios from 'axios';
 	import { createEventDispatcher } from 'svelte';
-	import { productStore } from './js/store.js';
+	import { productStore, mostrarProductoDetalles, productDetailStore } from './js/store.js';
 
 	// VARIABLES ************
 	// let products = [];
@@ -22,9 +22,12 @@
 	// En esta variable guardo el producto perteneciente a la fila (ver fila 87).
 	let productToDelete = null;
 	let productToUpdate = null;
+	let productToShow = null;
 	// Variable de estado para el Modal.
 	let open = false;
 	let notification = null;
+	// Variables para mostrar un producto
+	let productoSeleccionado = null;
 
 	const dispatch = createEventDispatcher();
 
@@ -83,8 +86,12 @@
 		open = false;
 	};
 
-	const manejadorModificacion = (product) => {
-		dispatch('editarProducto', product);
+	const manejadorModificacion = (data) => {
+		dispatch('editarProducto', data);
+	};
+
+	const manejadorDetalles = (data) => {
+		dispatch('mostrarProducto', data);
 	};
 
 	// ONMOUNT ************
@@ -101,6 +108,13 @@
 		<svelte:fragment slot="cell" let:cell let:row>
 			{#if cell.key === 'overflow'}
 				<OverflowMenu flipped>
+					<OverflowMenuItem
+						text="Detalles"
+						on:click={() => {
+							productToShow = row;
+							manejadorDetalles(productToShow);
+						}}
+					/>
 					<OverflowMenuItem
 						text="Modificar"
 						on:click={() => {
